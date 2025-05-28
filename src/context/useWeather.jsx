@@ -73,10 +73,22 @@ function WeatherProvider({ children }) {
         setLoading(false);
       }
     }
+
     if (checkWeather) {
       fetchWeather();
     }
   }, [checkWeather, city]);
+
+  //polling
+  useEffect(() => {
+    if (weatherData.length === 0) return;
+
+    const id = setInterval(() => {
+      setCheckWeather(true);
+    }, 3000);
+
+    return () => clearInterval(id);
+  }, [weatherData]);
 
   return (
     <weatherContext.Provider
