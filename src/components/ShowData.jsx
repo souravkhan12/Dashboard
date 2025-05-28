@@ -56,6 +56,11 @@ const Message = styled.p`
   font-size: 18px;
 `;
 
+const ErrorMessage = styled.div`
+  color: #ff4d4f;
+  font-size: 1.2rem;
+`;
+
 function ShowData() {
   const { weatherData, loading } = useWeather();
   if (loading) {
@@ -63,7 +68,9 @@ function ShowData() {
   }
   const data = weatherData || [];
 
-  if (!weatherData || !weatherData[0]) return null;
+  if (!weatherData || !weatherData[0]) {
+    return <ErrorMessage>Please Enter Valid City Name</ErrorMessage>;
+  }
 
   return (
     <Container>

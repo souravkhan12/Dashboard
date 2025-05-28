@@ -125,11 +125,13 @@ function Weather() {
             type="text"
             placeholder="Enter city name"
             value={city}
-            onChange={handleCity}
+            onChange={(e) => handleCity(e)}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") setCheckWeather(!checkWeather);
+            }}
           />
           <Button onClick={() => setCheckWeather(!checkWeather)}>Search</Button>
         </SearchBar>
-        {city && <CityInfo>Weather data for: {city}</CityInfo>}
       </SearchSection>
 
       <ShowData />

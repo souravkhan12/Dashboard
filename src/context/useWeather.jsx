@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 const weatherContext = createContext();
 
 function WeatherProvider({ children }) {
-  const [city, setCity] = useState();
+  const [city, setCity] = useState("");
   const [checkWeather, setCheckWeather] = useState(false);
   const [weatherData, setWeatherData] = useState(() => {
     const savedData = localStorage.getItem("weatherData");
@@ -17,13 +17,25 @@ function WeatherProvider({ children }) {
 
   useEffect(() => {
     if (!city || !checkWeather) return;
+    setCheckWeather(false);
+    setLoading(true);
+    setWeatherData([]);
+    localStorage.setItem("weatherData", []);
+
+    const cityRegex = /^[A-Za-z\s.'-]{2,}$/;
+    if (!cityRegex.test(city.trim())) {
+      setLoading(false);
+      return;
+    }
+
     async function fetchWeather() {
       try {
-        setLoading(true);
         const REACT_API_KEY = import.meta.env.VITE_REACT_API_KEY;
         const res = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${REACT_API_KEY}`
         );
+        console.log(city, checkWeather);
+
         const data = await res.json();
         if (data.cod !== "200") {
           throw new Error(data.message);
@@ -50,7 +62,6 @@ function WeatherProvider({ children }) {
         if (todayData) {
           filteredData.unshift(todayData);
         }
-
         setWeatherData(filteredData);
         localStorage.setItem("weatherData", JSON.stringify(filteredData));
 
