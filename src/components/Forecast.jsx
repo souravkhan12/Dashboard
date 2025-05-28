@@ -1,5 +1,6 @@
-import React from "react";
 import styled from "styled-components";
+import { useWeather } from "../context/useWeather";
+import Loader from "./Loader";
 
 const ForecastContainer = styled.div`
   display: flex;
@@ -50,7 +51,13 @@ const Temp = styled.p`
   margin: 8px 0 0;
 `;
 
-function Forecast({ data }) {
+function Forecast() {
+  const { weatherData, loading } = useWeather();
+  if (loading) {
+    return <Loader />;
+  }
+  const data = weatherData || [];
+
   return (
     <ForecastContainer>
       {data.map((item, index) => (

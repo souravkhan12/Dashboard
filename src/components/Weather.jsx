@@ -114,8 +114,7 @@ const CityInfo = styled.p`
 `;
 
 function Weather() {
-  const { city, handleCity, checkWeather, setCheckWeather, weatherData } =
-    useWeather();
+  const { city, handleCity, checkWeather, setCheckWeather } = useWeather();
 
   return (
     <Container>
@@ -133,7 +132,7 @@ function Weather() {
         {city && <CityInfo>Weather data for: {city}</CityInfo>}
       </SearchSection>
 
-      <ShowData weatherData={weatherData} />
+      <ShowData />
     </Container>
   );
 }

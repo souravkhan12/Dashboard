@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Forecast from "./Forecast";
+import { useWeather } from "../context/useWeather";
+import Loader from "./Loader";
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +56,11 @@ const Message = styled.p`
   font-size: 18px;
 `;
 
-function ShowData({ weatherData }) {
+function ShowData() {
+  const { weatherData, loading } = useWeather();
+  if (loading) {
+    return <Loader />;
+  }
   const data = weatherData || [];
 
   if (!weatherData || !weatherData[0]) return null;
@@ -78,7 +84,7 @@ function ShowData({ weatherData }) {
       </WeatherInfo>
 
       {data.length > 1 ? (
-        <Forecast data={data} />
+        <Forecast />
       ) : (
         <Message>No forecast data available</Message>
       )}
